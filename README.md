@@ -1,3 +1,10 @@
+---
+title: "Go语言实现的轻量级IM项目"
+date: 2022-01-04T16:18:59+08:00
+tag: ["Golang"]
+categories: ["Instant Messaging"]
+draft: true
+---
 
 # go-IM
 
@@ -32,3 +39,9 @@
 > 2、在处理客户端上线的 Handler 创建并添加用户（使用到 OS 中的同步 Lock ）
 >
 > 3、新增广播消息方法以及监听广播消息的 channel 方法
+
+### V0.3 :用户消息广播机制完善
+
+> server 新增功能
+>
+> 1、完善 handle 模块处处理业务的方法，启动一个针对与当前客户端的读goroutine
