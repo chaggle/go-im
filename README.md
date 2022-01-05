@@ -10,7 +10,7 @@ draft: true
 
 ## 使用 go 实现的微型服务器
 
-项目地址：https://github.com/chaggle/go-im
+项目地址：[https://github.com/chaggle/go-im](https://github.com/chaggle/go-im)
 
 ### V0.1 :建立基础的 main.go server.go，相应功能如下
 
@@ -44,4 +44,12 @@ draft: true
 
 > server 新增功能
 >
-> 1、完善 handle 模块处处理业务的方法，启动一个针对与当前客户端的读goroutine
+> 1、完善 handle 模块处处理业务的方法，启动一个针对与当前客户端的读 goroutine
+### V0.4 :用户业务层封装
+
+> 对于用户层业务的层次化、模块化
+>
+> 1、上下线的业务
+>
+> 2、处理消息的业务
+

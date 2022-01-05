@@ -55,16 +55,10 @@ func (this *Server) BroadCat(user *User, msg string) {
 func (this *Server) Handle(conn net.Conn) {
 	/* fmt.Println("Connecting Success") */
 
-	user := NewUser(conn)
+	user := NewUser(conn, this)
 
-	//用户上线,将用户加入到onlineMap中
-
-	this.mapLock.Lock()
-	this.OnlineMap[user.Name] = user
-	this.mapLock.Unlock()
-
-	//广播当前用户上线消息
-	this.BroadCat(user, "已上线")
+	//用户上线
+	user.Online()
 
 	//建立一个func函数来接受客户端发送的消息
 	go func() {
@@ -72,7 +66,8 @@ func (this *Server) Handle(conn net.Conn) {
 		for {
 			n, err := conn.Read(buf)
 			if n == 0 {
-				this.BroadCat(user, "已下线") //正常下线
+				//用户下线
+				user.Offline()
 				return
 			}
 
@@ -84,8 +79,8 @@ func (this *Server) Handle(conn net.Conn) {
 			//提取用户的消息(去除\n)
 			msg := string(buf[:n-1])
 
-			//广播得到的消息
-			this.BroadCat(user, msg)
+			//广播得到的相关消息！
+			user.Domessage(msg)
 		}
 	}()
 
