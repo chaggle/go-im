@@ -4,6 +4,7 @@ date: 2022-01-04T16:18:59+08:00
 tag: ["Golang"]
 categories: ["Instant Messaging"]
 draft: true
+
 ---
 
 # go-IM
@@ -45,11 +46,24 @@ draft: true
 > server 新增功能
 >
 > 1、完善 handle 模块处处理业务的方法，启动一个针对与当前客户端的读 goroutine
+
 ### V0.4 :用户业务层封装
 
 > 对于用户层业务的层次化、模块化
 >
-> 1、上下线的业务
+> server 中的 user 业务进行迁移
 >
-> 2、处理消息的业务
+> 1、server 关联
+>
+> 2、新增 Online、Offline、Domessage 方法
+
+### V0.5 :查询用户名以及用户名修改
+
+> user 新增两个功能，
+>
+> 1、用户名查询的功能
+>
+> 2、用户名修改的功能，保证每个用户名唯一
+
+
 

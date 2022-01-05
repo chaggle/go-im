@@ -2,6 +2,7 @@ package main
 
 import (
 	"net"
+	"strings"
 )
 
 type User struct {
@@ -52,9 +53,43 @@ func (this *User) Offline() {
 	this.server.BroadCat(this, "已下线")
 }
 
+//给当前User对应的客户端发送消息
+func (this *User) SendMsg(msg string) {
+	this.conn.Write([]byte(msg))
+}
+
 //用户发送消息功能
 func (this *User) Domessage(msg string) {
-	this.server.BroadCat(this, msg)
+	//简易设置逻辑，采用BF算法
+	if msg == "who" {
+		//查询当前在线的用户客户端
+
+		this.server.mapLock.Lock()
+		for _, usr := range this.server.OnlineMap {
+			onlineMsg := "[" + usr.Addr + "]" + usr.Name + ":" + "在线...\n"
+			this.SendMsg(onlineMsg)
+		}
+		this.server.mapLock.Unlock()
+	} else if len(msg) > 7 && msg[:7] == "rename|" {
+		// 消息格式: rename|张三
+		newName := strings.Split(msg, "|")[1]
+
+		//判断name是否存在
+		_, ok := this.server.OnlineMap[newName]
+		if ok {
+			this.SendMsg("用户名已使用，请重新更改!\n")
+		} else {
+			this.server.mapLock.Lock()
+			delete(this.server.OnlineMap, this.Name)
+			this.server.OnlineMap[newName] = this
+			this.server.mapLock.Unlock()
+
+			this.Name = newName
+			this.SendMsg("用户名更新完毕！当前用户名为：" + this.Name + "\n")
+		}
+	} else {
+		this.server.BroadCat(this, msg)
+	}
 }
 
 //监听广播域中的消息
